@@ -1,5 +1,5 @@
 from sqlalchemy import Column, BigInteger, UniqueConstraint
-from .base import Base
+from db.base import Base
 
 class SeenAssignment(Base):
     __tablename__ = 'seen_assignments'

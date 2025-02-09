@@ -4,7 +4,7 @@ import asyncio
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ConversationHandler
 from dotenv import load_dotenv
 from bot import handlers
-from db import database, models
+from db import database, base
 import nest_asyncio
 
 nest_asyncio.apply()
@@ -17,7 +17,7 @@ TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
 async def init_db():
     async with database.engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.create_all)
+        await conn.run_sync(base.Base.metadata.create_all)
 
 async def main():
     await init_db()

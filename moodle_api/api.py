@@ -63,23 +63,15 @@ class MoodleApi:
         return courses_response or []
 
     async def fetch_course_details(self, course_id: int):
-        """
-        Fetch course details for the given course ID.
-        This method now handles both list and dict responses.
-        """
         params = {'courseids[0]': course_id}
         response = await self.api_call('core_course_get_courses', **params)
         if response:
-            # If the response is a list, return the first element if available.
             if isinstance(response, list):
                 return response[0] if len(response) > 0 else {}
-            # If the response is a dict, try to extract the course details.
             elif isinstance(response, dict):
-                # Check if there's a 'courses' key that contains a list.
                 courses = response.get('courses')
                 if courses and isinstance(courses, list) and len(courses) > 0:
                     return courses[0]
-                # Otherwise, assume the response itself is the course details.
                 return response
         return {}
 
@@ -98,7 +90,6 @@ class MoodleApi:
         if grade_data and 'usergrades' in grade_data and grade_data['usergrades']:
             for item in grade_data['usergrades'][0]['gradeitems']:
                 name = item.get('itemname', 'Unnamed Assignment')
-                # Filter based on the grade type requested
                 if grade_type == 'assignment' and ('midterm' in name.lower() or 'endterm' in name.lower()):
                     continue
                 if grade_type == 'midterm' and 'midterm' not in name.lower():
@@ -117,7 +108,6 @@ class MoodleApi:
     async def fetch_grades_current_trimester(self, grade_type: str = 'assignment'):
         courses = await self.fetch_courses()
         now_ts = datetime.now().timestamp()
-        # Assume each course dict has 'startdate' and 'enddate' in timestamp format.
         current_courses = [
             course for course in courses
             if course.get('startdate') and course.get('enddate') and course['startdate'] <= now_ts <= course['enddate']

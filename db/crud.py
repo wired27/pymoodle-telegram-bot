@@ -1,8 +1,7 @@
 from sqlalchemy import select, delete
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from sqlalchemy.orm import defer
 
-from db.models import User, SeenAssignment, NotificationSetting, SentReminder
+from models import User, SeenAssignment, NotificationSetting, SentReminder
 from db.database import async_session
 
 async def get_user_by_telegram_id(telegram_id: int):

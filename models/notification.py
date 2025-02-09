@@ -1,5 +1,5 @@
 from sqlalchemy import Column, BigInteger, String, UniqueConstraint
-from .base import Base
+from db.base import Base
 
 class NotificationSetting(Base):
     __tablename__ = 'notification_settings'
